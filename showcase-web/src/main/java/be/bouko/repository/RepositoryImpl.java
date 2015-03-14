@@ -7,9 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/**
- * Created by BBOUKO on 14/03/2015.
- */
 @Stateless
 public class RepositoryImpl implements Repository {
     @PersistenceContext(unitName = "repository")

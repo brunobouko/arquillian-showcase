@@ -6,9 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-/**
- * Created by BBOUKO on 14/03/2015.
- */
 @Entity
 public class JpaEntity implements Serializable {
 

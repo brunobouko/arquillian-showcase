@@ -28,9 +28,6 @@ import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by BBOUKO on 14/03/2015.
- */
 @RunWith(Arquillian.class)
 public class RepositoryContainerTest {
 
