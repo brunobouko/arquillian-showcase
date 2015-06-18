@@ -97,11 +97,11 @@ public class RepositoryContainerTest {
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(exported)));
         try {
-            assertEquals("2 | Homer | Simpson", bufferedReader.readLine());
-            assertEquals("3 | Marge | Bouvier", bufferedReader.readLine());
-            assertEquals("4 | Bart | Simpson", bufferedReader.readLine());
-            assertEquals("5 | Lisa | Simpson", bufferedReader.readLine());
-            assertEquals("6 | Maggy | Simpson", bufferedReader.readLine());
+            assertEquals("7 | Homer | Simpson", bufferedReader.readLine());
+            assertEquals("8 | Marge | Bouvier", bufferedReader.readLine());
+            assertEquals("9 | Bart | Simpson", bufferedReader.readLine());
+            assertEquals("10 | Lisa | Simpson", bufferedReader.readLine());
+            assertEquals("11 | Maggy | Simpson", bufferedReader.readLine());
         } finally {
             bufferedReader.close();
         }
