@@ -1,8 +1,7 @@
 package be.bouko.repository;
 
-import be.bouko.export.Export;
-import be.bouko.model.JpaEntity;
-import org.hamcrest.core.IsCollectionContaining;
+import be.bouko.webservice.HelloService;
+import be.bouko.webservice.HelloServiceService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -10,23 +9,15 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.ejb.EJB;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
-import java.io.*;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.soap.AddressingFeature;
 import java.net.MalformedURLException;
-import java.util.List;
+import java.net.URL;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -35,10 +26,7 @@ public class AsClientRepositoryContainerTest {
     @Deployment
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(Repository.class.getPackage())
-                .addPackage(JpaEntity.class.getPackage())
-                .addPackage(Export.class.getPackage())
-                .addClass(RepositoryFillingEjb.class)
+                .addPackages(true, "be.bouko")
                 .addAsResource("persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -47,6 +35,18 @@ public class AsClientRepositoryContainerTest {
 
     @Test
     public void create_should_persist_a_JpaEntity() throws MalformedURLException, InterruptedException {
+
+    }
+
+    @Test
+    public void sayHello_via_webservice_call_should_return_an_answer() throws MalformedURLException {
+        URL wsdlURL = getClass().getResource("src/main/resources/wsdl/hello.wsdl");
+        HelloServiceService helloServiceService = new HelloServiceService(wsdlURL);
+        HelloService helloService = helloServiceService.getHelloService(new AddressingFeature(true, true));
+        BindingProvider bp = (BindingProvider)helloService;
+        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, "http://LBNL10270:8181/test/HelloServiceImplService");
+        String hello = helloService.sayHello("Bruno");
+        assertThat(hello.substring(0, hello.indexOf("uuid"))).isEqualTo("hello Bruno your message id was ");
     }
 
 

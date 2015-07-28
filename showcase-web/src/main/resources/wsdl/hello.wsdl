@@ -1,0 +1,37 @@
+<definitions xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.bouko.be/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://webservice.bouko.be/" name="HelloServiceService">
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://webservice.bouko.be/" schemaLocation="hello.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="sayHello">
+        <part name="parameters" element="tns:sayHello"/>
+    </message>
+    <message name="sayHelloResponse">
+        <part name="parameters" element="tns:sayHelloResponse"/>
+    </message>
+    <portType name="HelloService">
+        <operation name="sayHello">
+            <input message="tns:sayHello"/>
+            <output message="tns:sayHelloResponse"/>
+        </operation>
+    </portType>
+    <binding name="HelloServicePortBinding" type="tns:HelloService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="sayHello">
+            <soap:operation soapAction="sayHello"/>
+            <wsaw:UsingAddressing wsdl:required="true"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="HelloServiceService">
+        <port name="HelloService" binding="tns:HelloServicePortBinding">
+            <soap:address location="http://lbnl10270:8181/test/HelloServiceService"/>
+        </port>
+    </service>
+</definitions>
